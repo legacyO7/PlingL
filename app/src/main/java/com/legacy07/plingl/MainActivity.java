@@ -23,7 +23,16 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    final String xda = "https://canvasnitro2roms.blogspot.com/p/blog-page_24.html";
+    String url = "https://www.pling.com/p/1320337/startdownload?file_id=1566641392&file_name=blog-page_24.html&file_type=text/html&file_size=287529";
+    //final String xda ="https://canvasnitro2roms.blogspot.com/p/blog-page_24.html";
+
+    WebView mWebview;
+    //Button button;
+
+   // View view;
+    //String url ="https://www.google.com";
+
+    @SuppressLint("SetJavaScriptEnabled")
     final Activity activity = this;
     String url = "https://www.pling.com/p/1320337/startdownload?file_id=1566641392&file_name=blog-page_24.html&file_type=text/html&file_size=287529";
     Fragment fragment = null;
@@ -79,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
     @SuppressLint("ClickableViewAccessibility")
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,9 +111,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         mWebview.setWebViewClient(new WebViewClient() {
-            @SuppressWarnings("deprecation")
             @Override
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+
                 Toast.makeText(activity, "pling!", Toast.LENGTH_SHORT).show();
                 //   activity.setTitle(description);
 
@@ -119,18 +129,29 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 // Here put your code
-                Log.d("My Webview", url);
 
-                // return true; //Indicates WebView to NOT load the url;
                 return false; //Allow WebView to load url
+                //return true; //Indicates WebView to NOT load the url;
             }
 
+            @Override
+            public void onPageFinished(WebView view, String url) {
+
+                if ("www.pling.com".equals(Uri.parse(url).getHost())) {
+                    Toast.makeText(MainActivity.this, "Pling website", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(MainActivity.this, "CN2R website", Toast.LENGTH_SHORT).show();
+                    url = "https://www.pling.com/p/1320337/startdownload?file_id=1566641392&file_name=blog-page_24.html&file_type=text/html&file_size=287529";
+                    view.loadUrl(url);
+                }
+
+                super.onPageFinished(view, url);
+            }
         });
 
         mWebview.loadUrl(url);
         setContentView(mWebview);
-
-
 
 
 
@@ -210,7 +231,6 @@ activity.setTitle("I got clicked");
             return true;
         }
     };*/
-
 }
 
 
