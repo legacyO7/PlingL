@@ -3,7 +3,9 @@ package com.legacy07.plingl;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
@@ -21,14 +23,15 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
     final String url = "https://www.pling.com/p/1320337/startdownload?file_id=1566641392&file_name=blog-page_24.html&file_type=text/html&file_size=287529";
-    final  String xda ="https://canvasnitro2roms.blogspot.com/p/blog-page_24.html";
-    final Activity activity = this;
+    //final String xda ="https://canvasnitro2roms.blogspot.com/p/blog-page_24.html";
 
     WebView mWebview;
-    Button button;
+    //Button button;
+
    // View view;
     //String url ="https://www.google.com";
-    @SuppressLint("ClickableViewAccessibility")
+
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,34 +44,30 @@ public class MainActivity extends AppCompatActivity {
 
 
         mWebview.setWebViewClient(new WebViewClient() {
-            @SuppressWarnings("deprecation")
             @Override
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-                Toast.makeText(activity, "pling!", Toast.LENGTH_SHORT).show();
-             //   activity.setTitle(description);
-
-            }
-
-            @TargetApi(android.os.Build.VERSION_CODES.M)
-            @Override
-            public void onReceivedError(WebView view, WebResourceRequest req, WebResourceError rerr) {
-                // Redirect to deprecated method, so you can use it in all SDK versions
-                onReceivedError(view, rerr.getErrorCode(), rerr.getDescription().toString(), req.getUrl().toString());
+                Toast.makeText(MainActivity.this, "Some Error!" + description, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 // Here put your code
-                Log.d("My Webview", url);
-
-                // return true; //Indicates WebView to NOT load the url;
+                if ("www.pling.com".equals(Uri.parse(url).getHost())) {
+                    Toast.makeText(MainActivity.this, "Pling website", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(MainActivity.this, "CN2R website", Toast.LENGTH_SHORT).show();
+                }
                 return false; //Allow WebView to load url
+                //return true; //Indicates WebView to NOT load the url;
             }
 
         });
 
         mWebview.loadUrl(url);
         setContentView(mWebview);
+
+        /*
 
         long time=SystemClock.uptimeMillis();
 
@@ -82,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
 
         }
             Log.d("hi", mWebview.getUrl()+" is the url");
-
 
 
 
@@ -163,7 +161,6 @@ activity.setTitle("I got clicked");
             return true;
         }
     };*/
-
 }
 
 
