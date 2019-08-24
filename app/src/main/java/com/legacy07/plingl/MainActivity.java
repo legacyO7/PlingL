@@ -3,31 +3,81 @@ package com.legacy07.plingl;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.graphics.Bitmap;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.SystemClock;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
-import android.widget.LinearLayout;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    final String url = "https://www.pling.com/p/1320337/startdownload?file_id=1566641392&file_name=blog-page_24.html&file_type=text/html&file_size=287529";
-    final  String xda ="https://canvasnitro2roms.blogspot.com/p/blog-page_24.html";
+    final String xda = "https://canvasnitro2roms.blogspot.com/p/blog-page_24.html";
     final Activity activity = this;
+    String url = "https://www.pling.com/p/1320337/startdownload?file_id=1566641392&file_name=blog-page_24.html&file_type=text/html&file_size=287529";
+    Fragment fragment = null;
+    FragmentTransaction ft;
+    int i = 0;
 
     WebView mWebview;
-    Button button;
-   // View view;
-    //String url ="https://www.google.com";
+
+    FrameLayout frameLayout;
+    Button changeurl;
+
+
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+
+        i++;
+
+        if (i == 3) {
+            i = 0;
+            AlertDialog.Builder alert=new AlertDialog.Builder(this);
+            alert.setTitle("Select an Action")
+                    .setMessage("കുറച്ച് കഞ്ഞിയെടുക്കട്ടെ, മാണിക്യാ?")
+                    .setPositiveButton("Change Pling", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                            SharedPreferences prefs = getSharedPreferences("plingpref", Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = prefs.edit();
+                            prefs.edit().clear().apply();
+                            Intent intent = new Intent(getApplicationContext(), AddUrlActivity.class);
+                            startActivity(intent);
+
+                            url = prefs.getString("plingurl", "");
+                            changeurl.setText(url);
+
+
+                        }
+                    })
+                    .setNegativeButton("Exit", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            finish();
+                        }
+                    })
+                    .create().show();
+
+
+
+        }
+
+
+    }
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +86,18 @@ public class MainActivity extends AppCompatActivity {
 
         mWebview = findViewById(R.id.wview);
         mWebview = new WebView(this);
+        changeurl = findViewById(R.id.changeurl);
         mWebview.getSettings().setJavaScriptEnabled(true); // enable javascript
+        SharedPreferences prefs = getSharedPreferences("plingpref", Context.MODE_PRIVATE);
+        if (!prefs.getBoolean("pling", false)) {
 
+            Intent intent = new Intent(getApplicationContext(), AddUrlActivity.class);
+            startActivity(intent);
+            //  Toast.makeText(context, " alarm service started successfully ", Toast.LENGTH_LONG).show();
+
+        } else {
+            url = prefs.getString("plingurl", "");
+        }
 
 
         mWebview.setWebViewClient(new WebViewClient() {
@@ -45,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
                 Toast.makeText(activity, "pling!", Toast.LENGTH_SHORT).show();
-             //   activity.setTitle(description);
+                //   activity.setTitle(description);
 
             }
 
@@ -70,19 +130,6 @@ public class MainActivity extends AppCompatActivity {
         mWebview.loadUrl(url);
         setContentView(mWebview);
 
-        long time=SystemClock.uptimeMillis();
-
-        while (SystemClock.uptimeMillis()!=time+100)
-        {
-            if (mWebview.getUrl().trim().equals(xda)){
-                mWebview.loadUrl(url);
-                break;
-            }
-
-
-        }
-            Log.d("hi", mWebview.getUrl()+" is the url");
-
 
 
 
@@ -97,12 +144,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });*/
 
-       // mWebview.loadUrl("javascript:document.getElementsByClassName('btn btn-success btn-lg')[0].click();");
+        // mWebview.loadUrl("javascript:document.getElementsByClassName('btn btn-success btn-lg')[0].click();");
 
-      //  mWebview.loadUrl("javascript:document.getElementsByClassName('btn btn-success btn-lg')[0].click()"‌​);
+        //  mWebview.loadUrl("javascript:document.getElementsByClassName('btn btn-success btn-lg')[0].click()"‌​);
 
 
-     // mWebview.setOnTouchListener(handleTouch);
+        // mWebview.setOnTouchListener(handleTouch);
 
 
 
