@@ -2,12 +2,14 @@ package com.legacy07.plingl;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -39,8 +41,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         final AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle("Change Pling ?")
-                .setMessage("Changing the current pling URL, will RESET current pling url and stop your current work !" + "\n\nPRESS BACK AGAIN TO CANCEL THIS DIALOG !" + "\nകുറച്ച് കഞ്ഞിയെടുക്കട്ടെ, മാണിക്യാ?")
+        alert.setTitle("Select an action")
+                .setMessage("\nകുറച്ച് കഞ്ഞിയെടുക്കട്ടെ, മാണിക്യാ?")
                 .setNegativeButton("Change Pling", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -53,8 +55,7 @@ public class MainActivity extends AppCompatActivity {
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                         finish();
-                        //url = prefs.getString("plingurl", "");
-                        //changeurl.setText(myurl);
+          
                     }
                 })
                 .setPositiveButton("Exit App", new DialogInterface.OnClickListener() {
@@ -64,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 })
                 .create().show();
-        //super.onBackPressed();
     }
     @SuppressLint({"ClickableViewAccessibility", "SetJavaScriptEnabled"})
 
@@ -75,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
 
         mWebview = findViewById(R.id.wview);
         mWebview = new WebView(this);
-        //changeurl = findViewById(R.id.changeurl);
         mWebview.getSettings().setJavaScriptEnabled(true); // enable javascript
 
         SharedPreferences prefs = getSharedPreferences("plingpref", Context.MODE_PRIVATE);
@@ -135,7 +134,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(mWebview);
 
 
-        /*
+
+/*
         mWebview.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
