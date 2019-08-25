@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -23,23 +24,16 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    String url = "https://www.pling.com/p/1320337/startdownload?file_id=1566641392&file_name=blog-page_24.html&file_type=text/html&file_size=287529";
+    String url = "https://www.canvasnitro2roms.blogspot.com/p/287529";
     //final String xda ="https://canvasnitro2roms.blogspot.com/p/blog-page_24.html";
+    String myurl="";
 
     WebView mWebview;
-    //Button button;
-
-   // View view;
-    //String url ="https://www.google.com";
 
     @SuppressLint("SetJavaScriptEnabled")
     final Activity activity = this;
-    String url = "https://www.pling.com/p/1320337/startdownload?file_id=1566641392&file_name=blog-page_24.html&file_type=text/html&file_size=287529";
-    Fragment fragment = null;
-    FragmentTransaction ft;
     int i = 0;
 
-    WebView mWebview;
 
     FrameLayout frameLayout;
     Button changeurl;
@@ -106,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
             //  Toast.makeText(context, " alarm service started successfully ", Toast.LENGTH_LONG).show();
 
         } else {
-            url = prefs.getString("plingurl", "");
+            myurl = prefs.getString("plingurl", "");
         }
 
 
@@ -114,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
 
-                Toast.makeText(activity, "pling!", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(activity, "pling!", Toast.LENGTH_SHORT).show();
                 //   activity.setTitle(description);
 
             }
@@ -138,11 +132,11 @@ public class MainActivity extends AppCompatActivity {
             public void onPageFinished(WebView view, String url) {
 
                 if ("www.pling.com".equals(Uri.parse(url).getHost())) {
-                    Toast.makeText(MainActivity.this, "Pling website", Toast.LENGTH_SHORT).show();
+                //    Toast.makeText(MainActivity.this, "Pling", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    Toast.makeText(MainActivity.this, "CN2R website", Toast.LENGTH_SHORT).show();
-                    url = "https://www.pling.com/p/1320337/startdownload?file_id=1566641392&file_name=blog-page_24.html&file_type=text/html&file_size=287529";
+              //      Toast.makeText(MainActivity.this, "Tail", Toast.LENGTH_SHORT).show();
+                    url = myurl;
                     view.loadUrl(url);
                 }
 

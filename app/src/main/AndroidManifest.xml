@@ -6,9 +6,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/pling"
+        android:icon="@drawable/plogo"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/pling"
+        android:roundIcon="@drawable/plogo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".AddUrlActivity"></activity>
