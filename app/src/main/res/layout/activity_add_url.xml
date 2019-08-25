@@ -7,12 +7,16 @@
     tools:context=".AddUrlActivity">
 
     <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="411dp"
-        android:layout_height="509dp"
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_gravity="center"
         android:gravity="center"
         android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -23,10 +27,10 @@
 
         <EditText
             android:id="@+id/urltext"
-            android:paddingTop="50dp"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/enter_pling_url" />
+            android:hint="@string/enter_pling_url"
+            android:paddingTop="50dp" />
 
         <Button
             android:id="@+id/submit"
@@ -35,10 +39,10 @@
             android:text="loot it" />
 
         <TextView
-            android:paddingTop="60dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:paddingTop="60dp"
             android:text="Brought to you by \nlegacy07 &amp; tyakrish" />
 
     </LinearLayout>
