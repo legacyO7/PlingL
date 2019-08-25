@@ -20,14 +20,16 @@
             android:id="@+id/changeurl"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Change Pling " />
+            android:text="Change Pling "
+            tools:visibility="invisible" />
 
 
         <WebView
             android:id="@+id/wview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="true" />
+            android:clickable="true"
+            android:focusable="true" />
 
 
     </LinearLayout>
