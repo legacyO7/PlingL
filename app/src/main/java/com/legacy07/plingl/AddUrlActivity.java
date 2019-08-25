@@ -36,21 +36,20 @@ public class AddUrlActivity extends AppCompatActivity {
             submit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
-                    if (!urlstr.getText().toString().trim().matches("")) {
-
+                if (!urlstr.getText().toString().trim().equals("")) {
+                    SharedPreferences prefs = getSharedPreferences("plingpref", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = prefs.edit();
+           
                         editor.putBoolean("pling", true);
                         editor.putString("plingurl", urlstr.getText().toString().trim());
                         editor.apply();
-
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         startActivity(intent);
                         finish();
                     }
-                    else {
-                        urlstr.setHint("PLEASE ENTER THE URL");
-                        Toast.makeText(AddUrlActivity.this, "PLEASE ENTER THE URL !", Toast.LENGTH_SHORT).show();
-                    }
+                else
+                {
+                    urlstr.setHint("PLEASE ENTER THE URL YOU IDIOT");
                 }
             });
         }
