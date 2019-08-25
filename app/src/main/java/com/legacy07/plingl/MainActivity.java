@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v4.app.Fragment;
@@ -25,6 +26,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
@@ -33,10 +35,10 @@ public class MainActivity extends AppCompatActivity {
     //final String xda ="https://canvasnitro2roms.blogspot.com/p/blog-page_24.html";
 
     final Activity activity = this;
-    //Button changeurl;
 
     String myurl="";
     WebView mWebview;
+    TextView textView;
 
     @Override
     public void onBackPressed() {
@@ -48,9 +50,6 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
 
                         myurl="";
-                        SharedPreferences prefs = getSharedPreferences("plingpref", Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = prefs.edit();
-                        editor.clear().apply();
                         Intent intent = new Intent(getApplicationContext(), AddUrlActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
@@ -74,6 +73,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mWebview = findViewById(R.id.wview);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            activity.setImmersive(true);
+        }
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.pling_layout);
+
+        textView=findViewById(R.id.tvTitle);
+        textView.setText("1.0 Pling L");
+
         mWebview = new WebView(this);
         mWebview.getSettings().setJavaScriptEnabled(true); // enable javascript
 
@@ -99,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             // Didn't think it was needed, so had removed this onRecievedError earlier. Even the above method, if there is nothing in it then no use...
-            @TargetApi(android.os.Build.VERSION_CODES.M)
+            @TargetApi(Build.VERSION_CODES.M)
             @Override
             public void onReceivedError(WebView view, WebResourceRequest req, WebResourceError rerr) {
                 // Redirect to deprecated method, so you can use it in all SDK versions
