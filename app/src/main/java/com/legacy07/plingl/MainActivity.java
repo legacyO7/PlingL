@@ -10,10 +10,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
@@ -24,64 +27,46 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    String url = "https://www.canvasnitro2roms.blogspot.com/p/287529";
+    //String url = "https://www.canvasnitro2roms.blogspot.com/p/287529";
     //final String xda ="https://canvasnitro2roms.blogspot.com/p/blog-page_24.html";
-    String myurl="";
 
-    WebView mWebview;
-
-    @SuppressLint("SetJavaScriptEnabled")
     final Activity activity = this;
-    int i = 0;
+    //Button changeurl;
 
-
-    FrameLayout frameLayout;
-    Button changeurl;
-
-
+    String myurl="";
+    WebView mWebview;
 
     @Override
     public void onBackPressed() {
+        final AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle("Change Pling ?")
+                .setMessage("Changing the current pling URL, will RESET current pling url and stop your current work !" + "\n\nPRESS BACK AGAIN TO CANCEL THIS DIALOG !" + "\nകുറച്ച് കഞ്ഞിയെടുക്കട്ടെ, മാണിക്യാ?")
+                .setNegativeButton("Change Pling", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        myurl="";
+                        SharedPreferences prefs = getSharedPreferences("plingpref", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.clear().apply();
+                        Intent intent = new Intent(getApplicationContext(), AddUrlActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                        finish();
+                        //url = prefs.getString("plingurl", "");
+                        //changeurl.setText(myurl);
+                    }
+                })
+                .setPositiveButton("Exit App", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
+                    }
+                })
+                .create().show();
         //super.onBackPressed();
-
-        i++;
-
-        if (i == 3) {
-            i = 0;
-            AlertDialog.Builder alert=new AlertDialog.Builder(this);
-            alert.setTitle("Select an Action")
-                    .setMessage("കുറച്ച് കഞ്ഞിയെടുക്കട്ടെ, മാണിക്യാ?")
-                    .setPositiveButton("Change Pling", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-
-                            SharedPreferences prefs = getSharedPreferences("plingpref", Context.MODE_PRIVATE);
-                            SharedPreferences.Editor editor = prefs.edit();
-                            prefs.edit().clear().apply();
-                            Intent intent = new Intent(getApplicationContext(), AddUrlActivity.class);
-                            startActivity(intent);
-
-                            url = prefs.getString("plingurl", "");
-                            changeurl.setText(url);
-
-
-                        }
-                    })
-                    .setNegativeButton("Exit", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            finish();
-                        }
-                    })
-                    .create().show();
-
-
-
-        }
-
-
     }
-    @SuppressLint("ClickableViewAccessibility")
+    @SuppressLint({"ClickableViewAccessibility", "SetJavaScriptEnabled"})
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,29 +75,31 @@ public class MainActivity extends AppCompatActivity {
 
         mWebview = findViewById(R.id.wview);
         mWebview = new WebView(this);
-        changeurl = findViewById(R.id.changeurl);
+        //changeurl = findViewById(R.id.changeurl);
         mWebview.getSettings().setJavaScriptEnabled(true); // enable javascript
+
         SharedPreferences prefs = getSharedPreferences("plingpref", Context.MODE_PRIVATE);
         if (!prefs.getBoolean("pling", false)) {
 
             Intent intent = new Intent(getApplicationContext(), AddUrlActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
-            //  Toast.makeText(context, " alarm service started successfully ", Toast.LENGTH_LONG).show();
 
         } else {
             myurl = prefs.getString("plingurl", "");
         }
 
-
         mWebview.setWebViewClient(new WebViewClient() {
+
+            // BELOW 2 FUNCTIONS FOR DETECTING ERROR DURING PAGE LOAD
             @Override
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-
-               // Toast.makeText(activity, "pling!", Toast.LENGTH_SHORT).show();
-                //   activity.setTitle(description);
+               //Toast.makeText(getApplicationContext(), "Some loading Error! " + description, Toast.LENGTH_LONG).show();
+               //activity.setTitle(description);
 
             }
 
+            // Didn't think it was needed, so had removed this onRecievedError earlier. Even the above method, if there is nothing in it then no use...
             @TargetApi(android.os.Build.VERSION_CODES.M)
             @Override
             public void onReceivedError(WebView view, WebResourceRequest req, WebResourceError rerr) {
@@ -132,10 +119,10 @@ public class MainActivity extends AppCompatActivity {
             public void onPageFinished(WebView view, String url) {
 
                 if ("www.pling.com".equals(Uri.parse(url).getHost())) {
-                //    Toast.makeText(MainActivity.this, "Pling", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(MainActivity.this, "Pling", Toast.LENGTH_SHORT).show();
                 }
                 else {
-              //      Toast.makeText(MainActivity.this, "Tail", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(MainActivity.this, "Tail", Toast.LENGTH_SHORT).show();
                     url = myurl;
                     view.loadUrl(url);
                 }
@@ -144,36 +131,35 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mWebview.loadUrl(url);
+        mWebview.loadUrl(myurl);
         setContentView(mWebview);
 
 
-
-
-/*
+        /*
         mWebview.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 activity.setTitle("i got clicked");
                 return true;
             }
-        });*/
+        });
+        */
 
-        // mWebview.loadUrl("javascript:document.getElementsByClassName('btn btn-success btn-lg')[0].click();");
+        //mWebview.loadUrl("javascript:document.getElementsByClassName('btn btn-success btn-lg')[0].click();");
 
-        //  mWebview.loadUrl("javascript:document.getElementsByClassName('btn btn-success btn-lg')[0].click()"‌​);
-
-
-        // mWebview.setOnTouchListener(handleTouch);
+        //mWebview.loadUrl("javascript:document.getElementsByClassName('btn btn-success btn-lg')[0].click()"‌​);
 
 
 
-  /*      // Obtain MotionEvent object
+        //mWebview.setOnTouchListener(handleTouch);
+
+
+        /*
+        // Obtain MotionEvent object
         long downTime = SystemClock.uptimeMillis();
         long eventTime = SystemClock.uptimeMillis() + 500;
-        float x= (float) 556.48474,y= (float) 536.6646;
-
-// List of meta states found here:     developer.android.com/reference/android/view/KeyEvent.html#getMetaState()
+        float x= (float) 540, y= (float) 858;
+        // List of meta states found here:developer.android.com/reference/android/view/KeyEvent.html#getMetaState()
         int metaState = 0;
         MotionEvent motionEvent = MotionEvent.obtain(
                 downTime,
@@ -192,39 +178,45 @@ public class MainActivity extends AppCompatActivity {
                 y,
                 metaState
         );
-// Dispatch touch event to viewm
+        // Dispatch touch event to viewm
 
         mWebview.dispatchTouchEvent(motionEvent);
-        mWebview.dispatchTouchEvent(motionEvent2);*/
+        mWebview.dispatchTouchEvent(motionEvent2);
+
+        */
+
     }
 
-
-/*
+    /*
     private View.OnTouchListener handleTouch = new View.OnTouchListener() {
 
+        @SuppressLint("ClickableViewAccessibility")
         @Override
         public boolean onTouch(View v, MotionEvent event) {
 
             float x = event.getX();
             float y = event.getY();
 
-
-activity.setTitle("I got clicked");
+            activity.setTitle("I got clicked");
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
-                    Log.i("TAG", "touched down");
+                    //Log.i("TAG", "touched down");
+                    Toast.makeText(MainActivity.this, "touched down", Toast.LENGTH_SHORT).show();
                     break;
                 case MotionEvent.ACTION_MOVE:
-                    Log.i("TAG", "moving: (" + x + ", " + y + ")");
+                    //Log.i("TAG", "moving: (" + x + ", " + y + ")");
+                    Toast.makeText(MainActivity.this, "moving: (" + x + ", " + y + ")", Toast.LENGTH_SHORT).show();
                     break;
                 case MotionEvent.ACTION_UP:
-                    Log.i("TAG", "touched up");
+                    //Log.i("TAG", "touched up");
+                    Toast.makeText(MainActivity.this, "touched up", Toast.LENGTH_SHORT).show();
                     break;
             }
 
             return true;
         }
-    };*/
+    };
+    */
 }
 
 
