@@ -2,12 +2,14 @@ package com.legacy07.plingl;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -43,11 +45,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         //super.onBackPressed();
-
-        i++;
-
-        if (i == 3) {
-            i = 0;
             AlertDialog.Builder alert=new AlertDialog.Builder(this);
             alert.setTitle("Select an Action")
                     .setMessage("കുറച്ച് കഞ്ഞിയെടുക്കട്ടെ, മാണിക്യാ?")
@@ -76,10 +73,6 @@ public class MainActivity extends AppCompatActivity {
                     .create().show();
 
 
-
-        }
-
-
     }
     @SuppressLint("ClickableViewAccessibility")
 
@@ -90,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
 
         mWebview = findViewById(R.id.wview);
         mWebview = new WebView(this);
-        changeurl = findViewById(R.id.changeurl);
         mWebview.getSettings().setJavaScriptEnabled(true); // enable javascript
         SharedPreferences prefs = getSharedPreferences("plingpref", Context.MODE_PRIVATE);
         if (!prefs.getBoolean("pling", false)) {
@@ -146,8 +138,6 @@ public class MainActivity extends AppCompatActivity {
 
         mWebview.loadUrl(url);
         setContentView(mWebview);
-
-
 
 
 /*

@@ -28,7 +28,7 @@ public class AddUrlActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if (urlstr.getText().toString().trim() != null) {
+                if (!urlstr.getText().toString().trim().equals("")) {
                     SharedPreferences prefs = getSharedPreferences("plingpref", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.putBoolean("pling", true);
@@ -41,7 +41,7 @@ public class AddUrlActivity extends AppCompatActivity {
 
                 else
                 {
-                    urlstr.setHint("PLEASE ENTER THE URL");
+                    urlstr.setHint("PLEASE ENTER THE URL YOU IDIOT");
                 }
 
             }
