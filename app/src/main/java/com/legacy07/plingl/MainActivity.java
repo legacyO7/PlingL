@@ -9,39 +9,29 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.BitmapDrawable;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
 
-    //String url = "https://www.canvasnitro2roms.blogspot.com/p/287529";
-    //final String xda ="https://canvasnitro2roms.blogspot.com/p/blog-page_24.html";
-
     final Activity activity = this;
-    int i=0,count=0,sec=0,min=0,hr=0;
-    String myurl="",display="";
+    int i = 0, count = 0, sec = 0, min = 0, hr = 0;
+    String myurl = "", display = "";
+    String appPackageName = "com.autoclicker.clicker";
     WebView mWebview;
     TextView textView, meter;
+    PackageManager pm;
 
     @Override
     public void onBackPressed() {
@@ -52,12 +42,12 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
-                        myurl="";
+                        myurl = "";
                         Intent intent = new Intent(getApplicationContext(), AddUrlActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                         finish();
-          
+
                     }
                 })
                 .setPositiveButton("Exit App", new DialogInterface.OnClickListener() {
@@ -68,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
                 })
                 .create().show();
     }
+
     @SuppressLint({"ClickableViewAccessibility", "SetJavaScriptEnabled"})
 
     @Override
@@ -82,8 +73,8 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.pling_layout);
 
-        textView=findViewById(R.id.tvTitle);
-        meter=findViewById(R.id.meter);
+        textView = findViewById(R.id.tvTitle);
+        meter = findViewById(R.id.meter);
         textView.setText("1.0 Pling L");
 
         mWebview = new WebView(this);
@@ -105,8 +96,8 @@ public class MainActivity extends AppCompatActivity {
             // BELOW 2 FUNCTIONS FOR DETECTING ERROR DURING PAGE LOAD
             @Override
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-               //Toast.makeText(getApplicationContext(), "Some loading Error! " + description, Toast.LENGTH_LONG).show();
-               //activity.setTitle(description);
+                //Toast.makeText(getApplicationContext(), "Some loading Error! " + description, Toast.LENGTH_LONG).show();
+                //activity.setTitle(description);
 
             }
 
@@ -131,8 +122,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if ("www.pling.com".equals(Uri.parse(url).getHost())) {
                     //Toast.makeText(MainActivity.this, "Pling", Toast.LENGTH_SHORT).show();
-                }
-                else {
+                } else {
                     //Toast.makeText(MainActivity.this, "Tail", Toast.LENGTH_SHORT).show();
                     url = myurl;
                     view.loadUrl(url);
@@ -145,26 +135,54 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+        pm = getApplicationContext().getPackageManager();
+
+        if (!isPackageInstalled(appPackageName, pm)) {
+            AlertDialog.Builder autoclicker = new AlertDialog.Builder(this);
+            autoclicker.setMessage("AutoClicker isn't installed")
+                    .setNeutralButton("Install", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                            try {
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                            } catch (android.content.ActivityNotFoundException anfe) {
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                            }
+
+
+                        }
+                    })
+                    .setIcon(R.drawable.dodo)
+                    .setNegativeButton("It's Okay", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    }).create().show();
+
+        }
+
+
         mWebview.loadUrl(myurl);
         setContentView(mWebview);
-        Timer T=new Timer();
+        Timer T = new Timer();
         T.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                runOnUiThread(new Runnable()
-                {
+                runOnUiThread(new Runnable() {
                     @Override
-                    public void run()
-                    {
-                        sec=count;
-                        meter.setText("Clicks : "+(i/2)+" Amount : Rs " +Math.round( (i/2)*72)/100+"/- RunTime="+hr+":"+min+":"+sec);
+                    public void run() {
+                        sec = count;
+                        meter.setText("Clicks : " + (i / 2) + "    Amount : Rs " + Math.round((i / 2) * 72) / 100 + "/-    RunTime=" + hr + ":" + min + ":" + sec);
                         count++;
-                        if(count>59){
+                        if (count > 59) {
                             min++;
-                            count=0;
-                            sec=0;
-                            if (min>59){
-                                min=0;
+                            count = 0;
+                            sec = 0;
+                            if (min > 59) {
+                                min = 0;
                                 hr++;
                             }
 
@@ -190,7 +208,6 @@ public class MainActivity extends AppCompatActivity {
         //mWebview.loadUrl("javascript:document.getElementsByClassName('btn btn-success btn-lg')[0].click();");
 
         //mWebview.loadUrl("javascript:document.getElementsByClassName('btn btn-success btn-lg')[0].click()"‌​);
-
 
 
         //mWebview.setOnTouchListener(handleTouch);
@@ -259,6 +276,22 @@ public class MainActivity extends AppCompatActivity {
         }
     };
     */
+
+    private boolean isPackageInstalled(String packageName, PackageManager packageManager) {
+
+        boolean found = true;
+
+        try {
+
+            packageManager.getPackageInfo(packageName, 0);
+        } catch (PackageManager.NameNotFoundException e) {
+
+            found = false;
+        }
+
+        return found;
+    }
+
 }
 
 
