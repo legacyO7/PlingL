@@ -42,14 +42,19 @@ public class AddUrlActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     if (!urlstr.getText().toString().trim().equals("")) {
-                        SharedPreferences prefs = getSharedPreferences("plingpref", Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = prefs.edit();
-                        editor.clear().apply();
+                        if (urlstr.getText().toString().trim().startsWith("https://www.pling.")) {
+                            SharedPreferences prefs = getSharedPreferences("plingpref", Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = prefs.edit();
+                            editor.clear().apply();
 
-                        editor.putBoolean("pling", true);
-                        editor.putString("plingurl", urlstr.getText().toString().trim());
-                        editor.apply();
-                        gotoMain();
+                            editor.putBoolean("pling", true);
+                            editor.putString("plingurl", urlstr.getText().toString().trim());
+                            editor.apply();
+                            gotoMain();
+                        }
+                        else{
+                            submit.setText("Pling urls ONLY\nLoot it");
+                        }
                     } else {
                         urlstr.setHint("PLEASE ENTER THE URL YOU IDIOT");
                     }
