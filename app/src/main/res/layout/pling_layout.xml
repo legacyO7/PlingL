@@ -11,9 +11,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold"
-        android:textColorLink="@color/colorWhiteAccent"
+        android:layout_gravity="center"
         android:gravity="center"
         android:textAlignment="center"
-        android:textColor="#FFFFFF" />
+        android:textColor="@color/colorWhiteAccent" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:id="@+id/meter"
+      />
 
 </LinearLayout>

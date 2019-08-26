@@ -7,9 +7,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/plogo"
+        android:icon="@drawable/dodo"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/plogo"
+        android:roundIcon="@drawable/dodo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">

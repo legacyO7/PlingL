@@ -29,16 +29,19 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class MainActivity extends AppCompatActivity {
 
     //String url = "https://www.canvasnitro2roms.blogspot.com/p/287529";
     //final String xda ="https://canvasnitro2roms.blogspot.com/p/blog-page_24.html";
 
     final Activity activity = this;
-
-    String myurl="";
+    int i=0,count=0,sec=0,min=0,hr=0;
+    String myurl="",display="";
     WebView mWebview;
-    TextView textView;
+    TextView textView, meter;
 
     @Override
     public void onBackPressed() {
@@ -80,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setCustomView(R.layout.pling_layout);
 
         textView=findViewById(R.id.tvTitle);
+        meter=findViewById(R.id.meter);
         textView.setText("1.0 Pling L");
 
         mWebview = new WebView(this);
@@ -132,6 +136,9 @@ public class MainActivity extends AppCompatActivity {
                     //Toast.makeText(MainActivity.this, "Tail", Toast.LENGTH_SHORT).show();
                     url = myurl;
                     view.loadUrl(url);
+                    i++;
+
+
                 }
 
                 super.onPageFinished(view, url);
@@ -140,6 +147,33 @@ public class MainActivity extends AppCompatActivity {
 
         mWebview.loadUrl(myurl);
         setContentView(mWebview);
+        Timer T=new Timer();
+        T.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        sec=count;
+                        meter.setText("Clicks : "+(i/2)+" Amount : Rs " +Math.round( (i/2)*72)/100+"/- RunTime="+hr+":"+min+":"+sec);
+                        count++;
+                        if(count>59){
+                            min++;
+                            count=0;
+                            sec=0;
+                            if (min>59){
+                                min=0;
+                                hr++;
+                            }
+
+
+                        }
+                    }
+                });
+            }
+        }, 1000, 1000);
 
 
 
