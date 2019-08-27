@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AddUrlActivity">
 
+
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
         android:gravity="center"
         android:orientation="vertical"
@@ -26,12 +27,40 @@
             android:background="@drawable/logo" />
 
         <EditText
-            android:id="@+id/urltext"
+            android:id="@+id/urltext1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:hint="@string/enter_pling_url"
-            android:paddingTop="50dp" />
+            android:hint="@string/enter_pling_url1"/>
+        <EditText
+            android:id="@+id/urltext2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:hint="@string/enter_pling_url2"/>
+
+        <EditText
+            android:id="@+id/urltext3"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:hint="@string/enter_pling_url3"/>
+
+        <EditText
+            android:id="@+id/urltext4"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:hint="@string/enter_pling_url4"/>
+
+        <EditText
+            android:id="@+id/urltext5"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:hint="@string/enter_pling_url5"
+            />
+
 
         <Button
             android:id="@+id/submit"
@@ -40,6 +69,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
+            android:textStyle="bold"
             android:textColor="@color/colorWhiteAccent"
             android:text="loot it" />
 
@@ -53,4 +83,4 @@
     </LinearLayout>
 
 
-</android.support.constraint.ConstraintLayout>
+</ScrollView>

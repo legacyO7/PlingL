@@ -3,7 +3,12 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="enter_pling_url">enter pling url</string>
+    <string name="enter_pling_url1">enter pling url 1</string>
+    <string name="enter_pling_url2">enter pling url 2</string>
+    <string name="enter_pling_url3">enter pling url 3</string>
+    <string name="enter_pling_url4">enter pling url 4</string>
+    <string name="enter_pling_url5">enter pling url 5</string>
+
     <string name="pling_it">pling it</string>
     <string name="change_pling">change pling</string>
 

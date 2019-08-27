@@ -5,13 +5,19 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     tools:context=".MainActivity">
-    
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+            <WebView
+                android:id="@+id/wview"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:clickable="true"
+                android:focusable="true" />
 
-        <WebView
-            android:id="@+id/wview"
-            android:layout_width="fill_parent"
-            android:layout_height="50dp"
-            android:clickable="true"
-            android:focusable="true" />
+
+    </TableLayout>
+
+
 
 </android.support.constraint.ConstraintLayout>

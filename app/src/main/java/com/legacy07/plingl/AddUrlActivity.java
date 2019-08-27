@@ -16,7 +16,7 @@ import android.widget.Toast;
 public class AddUrlActivity extends AppCompatActivity {
 
     Button submit;
-    EditText urlstr;
+    EditText urlstr1,urlstr2,urlstr3,urlstr4,urlstr5;
     TextView textView;
 
     @Override
@@ -25,7 +25,12 @@ public class AddUrlActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_url);
 
         submit = findViewById(R.id.submit);
-        urlstr = findViewById(R.id.urltext);
+        urlstr1 = findViewById(R.id.urltext1);
+        urlstr2 = findViewById(R.id.urltext2);
+        urlstr3 = findViewById(R.id.urltext3);
+        urlstr4 = findViewById(R.id.urltext4);
+        urlstr5 = findViewById(R.id.urltext5);
+
 
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.pling_layout);
@@ -41,14 +46,24 @@ public class AddUrlActivity extends AppCompatActivity {
             submit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (!urlstr.getText().toString().trim().equals("")) {
-                        if (urlstr.getText().toString().trim().startsWith("https://www.pling.")) {
+
+                   String u1= urlstr1.getText().toString().trim();
+                    String u2= urlstr2.getText().toString().trim();
+                    String u3= urlstr3.getText().toString().trim();
+                    String u4= urlstr4.getText().toString().trim();
+                    String u5= urlstr5.getText().toString().trim();
+                    if (!urlstr1.getText().toString().trim().equals("")&&!urlstr2.getText().toString().trim().equals("")&&!urlstr3.getText().toString().trim().equals("")&&!urlstr4.getText().toString().trim().equals("")&&!urlstr5.getText().toString().trim().equals("")) {
+                        if (u1.startsWith("https://www.pling.")&&u2.startsWith("https://www.pling.")&&u3.startsWith("https://www.pling.")&&u4.startsWith("https://www.pling.")&&u5.startsWith("https://www.pling.")) {
                             SharedPreferences prefs = getSharedPreferences("plingpref", Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = prefs.edit();
                             editor.clear().apply();
 
                             editor.putBoolean("pling", true);
-                            editor.putString("plingurl", urlstr.getText().toString().trim());
+                            editor.putString("plingurl1", u1);
+                            editor.putString("plingurl2", u2);
+                            editor.putString("plingurl3", u3);
+                            editor.putString("plingurl4", u4);
+                            editor.putString("plingurl5", u5);
                             editor.apply();
                             gotoMain();
                         }
@@ -56,7 +71,7 @@ public class AddUrlActivity extends AppCompatActivity {
                             submit.setText("Pling urls ONLY\nLoot it");
                         }
                     } else {
-                        urlstr.setHint("PLEASE ENTER THE URL YOU IDIOT");
+                        Toast.makeText(getApplicationContext(),"PLEASE ENTER THE URL YOU IDIOT", Toast.LENGTH_LONG).show();
                     }
                 }
             });
