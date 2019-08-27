@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -19,7 +20,9 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -35,9 +38,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        final AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        final AlertDialog.Builder alert = new AlertDialog.Builder(this, R.style.MyDialogTheme);
         alert.setTitle("Select an action")
-                .setMessage("\nകുറച്ച് കഞ്ഞിയെടുക്കട്ടെ, മാണിക്യാ?")
+                .setMessage("കുറച്ച് കഞ്ഞിയെടുക്കട്ടെ, മാണിക്യാ?")
                 .setNegativeButton("Change Pling", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -65,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        AlertDialog.Builder builder=new AlertDialog.Builder(this,R.style.MyDialogTheme);
 
         mWebview = findViewById(R.id.wview);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
@@ -73,9 +77,39 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.pling_layout);
 
+
+        builder.setIcon(R.drawable.plogo)
+                .setTitle("Disclaimer")
+                .setMessage("This app is meant for educational purpose only. Developers wont be responsible for any unethical action done using this app. Proceed under yourown will.\n\nActual results might vary from the readings. Sometimes you wont get the half of it! ")
+                .setPositiveButton("Accept", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+
+                        Intent launchIntent = getPackageManager().getLaunchIntentForPackage(appPackageName);
+                        if (launchIntent != null) {
+                            if(isAppRunning(getApplicationContext(),appPackageName)) {
+                                startActivity(launchIntent);
+                                Toast.makeText(getApplicationContext(), "Opening autoclicker", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                        else
+                            Toast.makeText(getApplicationContext(),"Please open the autoclicker to automate", Toast.LENGTH_LONG).show();
+
+                    }
+                })
+                .setNegativeButton("Decline", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
+                    }
+                })
+                .setCancelable(false)
+                .create().show();
+
         textView = findViewById(R.id.tvTitle);
         meter = findViewById(R.id.meter);
-        textView.setText("1.0 Pling L");
+        textView.setText("1.1 Pling L");
 
         mWebview = new WebView(this);
         mWebview.getSettings().setJavaScriptEnabled(true); // enable javascript
@@ -139,8 +173,7 @@ public class MainActivity extends AppCompatActivity {
         pm = getApplicationContext().getPackageManager();
 
         if (!isPackageInstalled(appPackageName, pm)) {
-            AlertDialog.Builder autoclicker = new AlertDialog.Builder(this);
-            autoclicker.setMessage("AutoClicker isn't installed")
+            builder.setMessage("AutoClicker isn't installed")
                     .setNeutralButton("Install", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
@@ -175,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         sec = count;
-                        meter.setText("Clicks : " + (i / 2) + "    Amount : Rs " + Math.round((i / 2) * 72) / 100 + "/-    RunTime=" + hr + ":" + min + ":" + sec);
+                        meter.setText("Clicks : " + i/4 + "    Amount : Rs " + Math.round((i * 72)/4) / 100 + "/-    RunTime=" + hr + ":" + min + ":" + sec);
                         count++;
                         if (count > 59) {
                             min++;
@@ -291,6 +324,21 @@ public class MainActivity extends AppCompatActivity {
 
         return found;
     }
+
+        public static boolean isAppRunning(final Context context, final String packageName) {
+            final ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+            final List<ActivityManager.RunningAppProcessInfo> procInfos = activityManager.getRunningAppProcesses();
+            if (procInfos != null)
+            {
+                for (final ActivityManager.RunningAppProcessInfo processInfo : procInfos) {
+                    if (processInfo.processName.equals(packageName)) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
 
 }
 
